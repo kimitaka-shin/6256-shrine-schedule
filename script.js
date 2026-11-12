@@ -6,6 +6,7 @@
   const count = document.getElementById('event-count');
   const errorMessage = document.getElementById('load-error');
   const retryButton = document.getElementById('retry-load');
+  const liveStatus = document.getElementById('live-status');
   const today = new Date();
   const state = {
     year: today.getFullYear(),
@@ -24,6 +25,27 @@
   const weekdayDate = (key) => new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }).format(parseDate(key));
   const statusClass = (status) => status === '中止' ? 'cancelled' : status === '変更あり' ? 'changed' : 'planned';
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const isLiveEvent = (event, now = new Date()) => {
+    if (!event || event.status === '中止' || !event.startTime || !event.endTime) return false;
+    const todayKey = keyOf(now);
+    if (event.date !== todayKey) return false;
+    const toMinutes = (value) => {
+      const match = String(value).match(/^(\d{1,2}):(\d{2})$/);
+      return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+    };
+    const start = toMinutes(event.startTime);
+    const end = toMinutes(event.endTime);
+    if (start === null || end === null) return false;
+    const current = now.getHours() * 60 + now.getMinutes();
+    return current >= start && current < end;
+  };
+
+  function renderLiveStatus() {
+    const active = state.events.some((event) => isLiveEvent(event));
+    liveStatus.hidden = !active;
+    document.body.classList.toggle('is-live', active);
+  }
+
   const eventMap = () => {
     const map = new Map();
     state.events.forEach((event) => {
@@ -63,11 +85,12 @@
       if (key === state.selectedDate) button.classList.add('is-selected');
       if (mainEvent) {
         button.classList.add('has-event', `status-${statusClass(mainEvent.status)}`);
+        if (dayEvents.some((event) => isLiveEvent(event))) button.classList.add('is-live-day');
         button.setAttribute('aria-label', `${weekdayDate(key)}、${mainEvent.status || '出店予定'}`);
       } else {
         button.setAttribute('aria-label', weekdayDate(key));
       }
-      button.innerHTML = `<span class="day-number">${day}</span>${mainEvent ? `<span class="day-status">${escapeHtml(mainEvent.status || '出店予定')}</span>` : ''}`;
+      button.innerHTML = `<span class="day-number">${day}</span>${mainEvent ? `<span class="day-status">${escapeHtml(mainEvent.status || '出店予定')}</span>` : ''}${dayEvents.some((event) => isLiveEvent(event)) ? '<span class="day-live-dot" aria-label="出店中"></span>' : ''}`;
       button.addEventListener('click', () => {
         state.selectedDate = key;
         renderCalendar();
@@ -118,6 +141,7 @@
   }
 
   function renderAll() {
+    renderLiveStatus();
     renderCalendar();
     renderList();
     if (state.selectedDate) renderSelectedDetail(state.selectedDate);
@@ -174,6 +198,8 @@
       }
       state.events = payload.events.filter((event) => /^\d{4}-\d{2}-\d{2}$/.test(event.date || ''));
       renderAll();
+      if (window.liveStatusTimer) clearInterval(window.liveStatusTimer);
+      window.liveStatusTimer = setInterval(() => { renderLiveStatus(); renderCalendar(); }, 30000);
     };
     script.onerror = () => {
       if (finished) return;
