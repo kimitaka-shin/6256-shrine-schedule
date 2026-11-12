@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b45">
+  <meta name="description" content="高円寺氷川神社での六二五六珈琲の出店スケジュール。神社の境内で、自分で淹れる珈琲体験をご案内します。">
+  <title>神社出店スケジュール｜六二五六珈琲</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="六二五六珈琲 トップ">
+      <span class="brand-mark" aria-hidden="true">六二五六</span>
+      <span class="brand-name">MUTSUGORO COFFEE</span>
+    </a>
+    <span class="header-label">KOENJI HIKAWA SHRINE</span>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-photo" role="img" aria-label="陽の光が差し込む高円寺氷川神社の境内"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">COFFEE AT THE SHRINE</p>
+        <p class="hero-kicker">神社で、珈琲を。</p>
+        <h1 id="page-title">高円寺氷川神社<br>出店スケジュール</h1>
+        <p class="hero-description">境内で、自分で淹れる一杯を。<br>六二五六珈琲の出店日をご案内します。</p>
+      </div>
+      <div class="hero-index" aria-hidden="true">6256 <span>／</span> SHRINE</div>
+    </section>
+
+    <section class="schedule-section content-width" aria-labelledby="schedule-heading">
+      <div class="section-heading">
+        <p class="section-kicker">SCHEDULE</p>
+        <h2 id="schedule-heading">出店カレンダー</h2>
+        <p class="section-lead">日付を選ぶと、その日の出店情報をご覧いただけます。</p>
+      </div>
+
+      <div class="calendar-card">
+        <div id="live-status" class="live-status" role="status" aria-live="polite" hidden>
+          <span class="live-indicator" aria-hidden="true"></span>
+          <span class="live-copy"><strong>ただいま出店中</strong><small>境内で、珈琲をご用意しています。</small></span>
+          <span class="live-en">OPEN NOW</span>
+        </div>
+        <div class="calendar-topline">
+          <div>
+            <p class="calendar-overline">MONTHLY CALENDAR</p>
+            <h3 id="month-label" aria-live="polite">読み込み中</h3>
+          </div>
+          <div class="month-controls" aria-label="表示する月を変更">
+            <button type="button" id="prev-month" class="month-button" aria-label="前の月">‹</button>
+            <button type="button" id="today-month" class="today-button">今月</button>
+            <button type="button" id="next-month" class="month-button" aria-label="次の月">›</button>
+          </div>
+        </div>
+
+        <div class="calendar-weekdays" aria-hidden="true">
+          <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+        </div>
+        <div id="calendar-grid" class="calendar-grid" aria-label="出店カレンダー"></div>
+        <div class="calendar-legend" aria-label="営業状況の凡例">
+          <span><i class="legend-dot planned"></i>出店予定</span>
+          <span><i class="legend-dot changed"></i>変更あり</span>
+          <span><i class="legend-dot cancelled"></i>中止</span>
+        </div>
+
+        <div id="selected-detail" class="selected-detail" aria-live="polite">
+          <p class="detail-hint">日付を選択すると、出店情報がここに表示されます。</p>
+        </div>
+      </div>
+
+      <div class="list-heading">
+        <div>
+          <p class="section-kicker">THIS MONTH</p>
+          <h2>今月の出店予定</h2>
+        </div>
+        <span id="event-count" class="event-count">—</span>
+      </div>
+      <div id="event-list" class="event-list" aria-live="polite">
+        <p class="loading-message">スケジュールを読み込んでいます。</p>
+      </div>
+      <p id="load-error" class="load-error" hidden>スケジュールを読み込めませんでした。時間をおいて、もう一度お試しください。</p>
+      <button id="retry-load" class="retry-button" type="button" hidden>再読み込み</button>
+    </section>
+
+    <section class="experience-section">
+      <div class="content-width experience-inner">
+        <div class="experience-heading">
+          <p class="section-kicker">COFFEE EXPERIENCE</p>
+          <h2>神社で、自分で淹れる。<br>いつもと少し違う珈琲の時間。</h2>
+          <p>その日の気分や感覚を手がかりに、豆を選び、自分の手で一杯を抽出します。</p>
+        </div>
+        <div class="experience-facts">
+          <div class="fact"><span class="fact-label">ご予約</span><strong>不要</strong><small>当日、そのままお越しください</small></div>
+          <div class="fact"><span class="fact-label">所要時間</span><strong>約5〜8分</strong><small>抽出体験の目安です</small></div>
+          <div class="fact"><span class="fact-label">体験料</span><strong>1,000円</strong><small>お支払い方法は当日ご案内します</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice-section content-width">
+      <p class="section-kicker">INFORMATION</p>
+      <h2>ご来店前にご確認ください</h2>
+      <p>天候や神社の行事などにより、出店の中止・時間変更が生じる場合があります。ご来店前に、このページで最新の営業状況をご確認ください。</p>
+      <p class="notice-small">※ 営業時間・最終受付は出店日によって異なる場合があります。各日付の詳細をご確認ください。</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">六二五六珈琲</div>
+    <p>自分の五感と向き合う、珈琲の体験。</p>
+    <small>© MUTSUGORO COFFEE</small>
+  </footer>
+</body>
+</html>
